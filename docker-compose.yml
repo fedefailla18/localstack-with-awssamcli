@@ -5,12 +5,15 @@ services:
     container_name: localstack
     restart: on-failure
     environment: 
-      - DEFAULT_REGION=ap-northeast-2
+      - SERVICES=dynamodb:4569,s3,lambda,logs,cloudformation,iam,ssm
+      - DEFAULT_REGION=us-east-1
+      - PORT_WEB_UI=9001
+      - USE_SSL=true
+      - DATA_DIR=/tmp/localstack/data
+      - AWS_DEFAULT_REGION=us-east-1
       - EDGE_PORT=4566
-      - SERVICES=s3,lambda,logs
       - AWS_ACCESS_KEY_ID=foo
-      - AWS_SECRET_ACCESS_KEY=bar
-      - AWS_DEFAULT_REGION=sa-east-1
+      - AWS_SECRET_ACCESS_KEY=bar    
     ports: 
       - '4566-4583:4566-4583'
     volumes:
