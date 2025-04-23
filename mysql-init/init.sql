@@ -1,0 +1,9 @@
+-- mysql-init/init.sql
+
+CREATE DATABASE IF NOT EXISTS newvcdb;
+
+CREATE USER IF NOT EXISTS 'dbearer'@'%' IDENTIFIED BY 'dbearerpass';
+
+GRANT ALL PRIVILEGES ON *.* TO 'dbearer'@'%' WITH GRANT OPTION;
+
+FLUSH PRIVILEGES;

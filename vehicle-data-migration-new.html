@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Vehicle Data Migration Strategy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/white.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h2>🚗 Vehicle Data Migration Strategy</h2>
+        <p>Safe & Transparent Upgrade to Updated VCDB Reference Data</p>
+      </section>
+
+      <section>
+        <h2>🔹 Project Context</h2>
+        <ul>
+          <li>Migrating from <code>vcdb_vehicle_data</code> ➜ <code>vcdb_vehicle_data_new</code></li>
+          <li>Our production table <code>consumer_car_details</code> stores vehicle values directly</li>
+          <li>Reference values (make, model, trim, engine) have changed in new VCDB</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>⚠️ The Challenge</h2>
+        <ul>
+          <li>No foreign keys — just string matches</li>
+          <li>Reference data changes: names, casing, formats</li>
+          <li>Need to avoid breaking downstream rules and pricing logic</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>🧠 Staged Migration Process</h2>
+        <ol>
+          <li><strong>Load:</strong> Import <code>vcdb_vehicle_data_new</code></li>
+          <li><strong>Compare:</strong> Scan dynamic tables like <code>consumer_car_details</code></li>
+          <li><strong>Map:</strong> Suggest replacements, insert into <code>temp_car_mappings</code></li>
+          <li><strong>Transform:</strong> Update production tables using safe SQL scripts</li>
+          <li><strong>Promote:</strong> Rename:
+            <ul>
+              <li><code>vcdb_vehicle_data</code> ➜ <code>vcdb_vehicle_data_old</code></li>
+              <li><code>vcdb_vehicle_data_new</code> ➜ <code>vcdb_vehicle_data</code></li>
+            </ul>
+          </li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>✅ Benefits</h2>
+        <ul>
+          <li><strong>Safe</strong> – updates happen before promoting new data</li>
+          <li><strong>Traceable</strong> – mappings logged in <code>temp_car_mappings</code></li>
+          <li><strong>Flexible</strong> – supports fuzzy matching + manual confirmation</li>
+          <li><strong>Repeatable</strong> – works for future data upgrades</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>📈 Next Steps</h2>
+        <ul>
+          <li>Finish reviewing mappings (make, model, trim, engine ID, description)</li>
+          <li>Run update scripts safely on production tables</li>
+          <li>Promote new VCDB table into live use</li>
+          <li>Validate downstream systems (rules, pricing, APIs)</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true });
+  </script>
+</body>
+</html>

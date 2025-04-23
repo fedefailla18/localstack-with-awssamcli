@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>Vehicle Data Migration Strategy</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/reveal.css">
+  <link rel="stylesheet" href="https://unpkg.com/reveal.js/dist/theme/white.css">
+</head>
+<body>
+  <div class="reveal">
+    <div class="slides">
+
+      <section>
+        <h2>🚗 Vehicle Data Migration Strategy</h2>
+        <p>A safe & transparent approach to syncing with updated VCDB reference data</p>
+      </section>
+
+      <section>
+        <h2>🔹 Project Context</h2>
+        <ul>
+          <li>Migrating from <code>vcdb_vehicle_data</code> ➜ <code>vcdb_vehicle_data_new</code></li>
+          <li><code>consumer_car_details</code> stores car info as values (not FKs)</li>
+          <li>Reference data evolved (makes, models, engines)</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>⚠️ The Challenge</h2>
+        <ul>
+          <li>No 1:1 mappings</li>
+          <li>Changes like "EQB 250" ➜ "EQB 250+"</li>
+          <li>Impacts pricing, API logic, rules</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>🧠 Our Process</h2>
+        <ol>
+          <li>Detect outdated values (via EXISTS/NOT EXISTS)</li>
+          <li>Suggest replacements (with similarity score)</li>
+          <li>Manual confirmation</li>
+          <li>Store in <code>temp_car_mappings</code></li>
+          <li>Apply safe updates to consumer data</li>
+        </ol>
+      </section>
+
+      <section>
+        <h2>✅ Benefits</h2>
+        <ul>
+          <li><strong>Accurate</strong>: validated replacements only</li>
+          <li><strong>Safe</strong>: controlled updates</li>
+          <li><strong>Transparent</strong>: all mappings logged</li>
+          <li><strong>Repeatable</strong>: supports future updates</li>
+        </ul>
+      </section>
+
+      <section>
+        <h2>📈 Next Steps</h2>
+        <ul>
+          <li>Finalize mappings (make, model, trim, engine_id, engine_desc)</li>
+          <li>Run update scripts</li>
+          <li>Validate downstream systems</li>
+          <li>Prep automated pipelines for future refreshes</li>
+        </ul>
+      </section>
+
+    </div>
+  </div>
+
+  <script src="https://unpkg.com/reveal.js/dist/reveal.js"></script>
+  <script>
+    Reveal.initialize({ hash: true });
+  </script>
+</body>
+</html>

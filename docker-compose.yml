@@ -1,21 +1,19 @@
 version: '3.8'
 services:
-  localstack: 
-    image: localstack-with-sam-cli
-    container_name: localstack
-    restart: on-failure
-    environment: 
-      - SERVICES=dynamodb:4569,s3,lambda,logs,cloudformation,iam,ssm
-      - DEFAULT_REGION=us-east-1
-      - PORT_WEB_UI=9001
-      - USE_SSL=true
-      - DATA_DIR=/tmp/localstack/data
-      - AWS_DEFAULT_REGION=us-east-1
-      - EDGE_PORT=4566
-      - AWS_ACCESS_KEY_ID=foo
-      - AWS_SECRET_ACCESS_KEY=bar    
-    ports: 
-      - '4566-4583:4566-4583'
+  mysql:
+    image: mysql:8.4.0-oraclelinux8
+    container_name: mysql1
+    #restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: vcdb
+      MYSQL_USER: vcdb
+      MYSQL_PASSWORD: vcdb
+    ports:
+      - "3305:3306"
     volumes:
-      - "/Users/federicofailla/Downloads:/data/localstack"
-      - "/var/run/docker.sock:/var/run/docker.sock"
+      - mysql_data:/var/lib/mysql
+      - ./mysql-init:/docker-entrypoint-initdb.d
+
+volumes:
+  mysql_data:
